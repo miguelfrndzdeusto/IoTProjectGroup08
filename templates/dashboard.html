@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Station Dashboard</title>
+    <style>
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .station-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .chart {
+            margin: 5px;
+        }
+
+        .normal-chart {
+            width: 100%;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            border: 2px solid blue;
+        }
+
+        th, td {
+            border: 1px solid blue;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center; color: blue;">
+            Weather Station Dashboard
+        </h1>
+    </header>
+    {% for station in charts %}
+        <div class="station-container">
+            {% for chart in station %}
+                {% if loop.first %}
+                    <div class="chart normal-chart">
+                        {{ chart.to_html() | safe }}
+                    </div>
+                {% elif loop.last %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Current</th>
+                            <th>Min</th>
+                            <th>Max</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Air Quality</td>
+                            <td>{{ chart.air_quality }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>PM2.5</td>
+                            <td>{{ chart.pm2_5 }}</td>
+                            <td>{{ chart.pm2_5_min }}</td>
+                            <td>{{ chart.pm2_5_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>PM10</td>
+                            <td>{{ chart.pm10 }}</td>
+                            <td>{{ chart.pm10_min }}</td>
+                            <td>{{ chart.pm10_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>NO2</td>
+                            <td>{{ chart.no2 }}</td>
+                            <td>{{ chart.no2_min }}</td>
+                            <td>{{ chart.no2_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>SO2</td>
+                            <td>{{ chart.so2 }}</td>
+                            <td>{{ chart.so2_min }}</td>
+                            <td>{{ chart.so2_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td>{{ chart.temperature }}</td>
+                            <td>{{ chart.temperature_min }}</td>
+                            <td>{{ chart.temperature_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>Atm. Pressure</td>
+                            <td>{{ chart.atm_pressure }}</td>
+                            <td>{{ chart.atm_pressure_min }}</td>
+                            <td>{{ chart.atm_pressure_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>Humidity</td>
+                            <td>{{ chart.humidity }}</td>
+                            <td>{{ chart.humidity_min }}</td>
+                            <td>{{ chart.humidity_max }}</td>
+                        </tr>
+                        <tr>
+                            <td>Wind</td>
+                            <td>{{ chart.wind }}</td>
+                            <td>{{ chart.wind_min }}</td>
+                            <td>{{ chart.wind_max }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                    <div class="chart">
+                        {{ chart.to_html() | safe }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>

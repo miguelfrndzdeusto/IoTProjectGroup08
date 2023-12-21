@@ -12,7 +12,11 @@ Some considerations in terms of the requirements and installation process for th
 # For pulling the latest MongoDB image
 docker pull mongo:latest
 # For running the container
-docker run -d -p 27017:27017 --name=mongo mongo 
+docker run -d -p 27017:27017 --name=mongo mongo
+# For starting the container
+docker start mongo
+# For stoping the container
+docker stop mongo
 ```
 
 In both cases, please do not forget to specify your host (`localhost`/`IP address`) and listening port in the `final_project.py` client configuration :)

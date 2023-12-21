@@ -7,16 +7,33 @@ Some considerations in terms of the requirements and installation process for th
 * Make sure to be running `MongoDB` in your host device.
   - If you decide to host your database in a different machine from the one running the dashboard/updates, make sure to modify the `mongod.conf` file accordingly to bind **your** IP address (by default only localhost is bound).
   - If you decide to host the database locally, please uncomment the lines referring to `MongoDB` in the `./launch.sh` script to start/stop the service locally.
+  - For the sake of simplicity, we recommend running MongoDB within a docker container:
+```
+# For pulling the latest MongoDB image
+docker pull mongo:latest
+# For running the container
+docker run -d -p 27017:27017 --name=mongo mongo 
+```
 
 In both cases, please do not forget to specify your host (`localhost`/`IP address`) and listening port in the `final_project.py` client configuration :)
 
-```
-# For the sake of simplicity, we recommend running MongoDB within a docker container...
-docker pull mongo:latest # For pulling the latest MongoDB image
-docker run -d -p 27017:27017 --name=mongo mongo # For running the container
-```
- 
 * For all the necessary python modules, please refer to the `requirements.txt` provided in this repository.
+
+* If you wish to access the dashboard from outside the hosting device, we provide below a comprehensive guide on how to do so using the `ufw` linux firewall:
+```
+# Install ufw
+sudo apt install ufw
+# Enable ufw
+sudo ufw enable
+# Allow ssh connections (optional in this case, but great for debugging)
+sudo ufw allow ssh
+# Open port 5000 to access Flask dashboard :)
+sudo ufw allow 5000
+# In order to see the IP address of your host device:
+hostname -I
+# Disable ufw firewall
+sudo ufw disable
+```
   
 ## How to Run the Project?
 

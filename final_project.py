@@ -152,14 +152,17 @@ def fetch_data():
         stations_data.append(station_report)
     return stations_data
 
+def update_sensors():
+    # Update LED info from local sensors
+    setText("Updating...")
+    time.sleep(2)
+    # Display Current Temp and Humidity from local sensor
+    humi, temp = get_current_humi_temp()
+    setText(f"Temp: {temp} \nHumidity: {humi}")
+
 def update_database():
     while True:
-        # Update LED info from local sensors
-        setText("Updating...")
-        time.sleep(2)
-        # Display Current Temp and Humidity from local sensor
-        humi, temp = get_current_humi_temp()
-        setText(f"Temp: {temp} \nHumidity: {humi}")
+        update_sensors()
         # Fetch data from weather stations
         stations_data = fetch_data()
         station_dicts = [station.__dict__ for station in stations_data]

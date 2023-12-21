@@ -301,7 +301,7 @@ if __name__ == "__main__":
 
             # Run the Flask app
             try:
-                app.run(debug = True, use_reloader = False)
+                app.run(debug = True, use_reloader = False, host = '0.0.0.0')
                 
             finally:
                 print("\nFlask App Stopped...")

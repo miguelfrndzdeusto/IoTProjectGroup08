@@ -1,5 +1,12 @@
 #!/bin/bash
 #source env/bin/activate
+# Check if an argument is provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <mongodb-host-ip>"
+    exit 1
+fi
+mongo_host=$1
+export MONGO_HOST="$mongo_host"
 echo -e "Initializing MongoDB in port 27017..."
 #sudo systemctl start mongod
 echo -e "Starting Database..."

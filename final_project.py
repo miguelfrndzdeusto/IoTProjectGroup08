@@ -275,7 +275,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Create a MongoDB client and connect to the database
-    host, port = 'aaaaa.local', 27017
+    host, port = os.environ.get('MONGO_HOST'), 27017
     client = pymongo.MongoClient(host, port)
     db = client.weather_stations_db
     collection = db.weather_stations

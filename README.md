@@ -41,7 +41,7 @@ sudo ufw disable
   
 ## How to Run the Project?
 
-The whole project can be directly executed by running the `./launch.sh` script. 
+The whole project can be directly executed by running the `./launch.sh` script. To do so, please provide as an argument the address of your `mongodb` host.
 
 Optionally, it can be run manually by:
 * `python final_project.py launch` to launch and populate the database by fetching the corresponding data.

@@ -6,6 +6,11 @@ Repository for our IoT Project (Group 8).
 Some considerations in terms of the requirements and installation process for this project:
 * Make sure to be running `MongoDB` in your host device.
   - If you decide to host your database in a different machine from the one running the dashboard/updates, make sure to modify the `mongod.conf` file accordingly to bind **your** IP address (by default only localhost is bound).
+```
+# For the sake of simplicity, we recommend running MongoDB within a docker container...
+docker pull mongo:latest # For pulling the latest MongoDB image
+docker run -d -p 27017:27017 --name=mongo mongo # For running the container
+```
   - If you decide to host the database locally, please uncomment the lines referring to `MongoDB` in the `./launch.sh` script to start/stop the service locally.
 
 In both cases, please do not forget to specify your host (`localhost`/`IP address`) and listening port in the `final_project.py` client configuration :)

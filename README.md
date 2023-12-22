@@ -23,6 +23,8 @@ In both cases, please do not forget to specify your host (`localhost`/`IP addres
 
 * For all the necessary python modules, please refer to the `requirements.txt` provided in this repository.
 
+* In terms of the local sensors/actuators deployed, do not forget to plug the LED display and the temperature/humidity sensors to the board.
+
 * If you wish to access the dashboard from outside the hosting device, we provide below a comprehensive guide on how to do so using the `ufw` linux firewall:
 ```
 # Install ufw

@@ -1,5 +1,5 @@
 # IoTProjectGroup08
-Repository for our IoT Project (Group 8).
+Repository for our IoT Project (Group 8). Please find below all the required information for the installation process.
 
 ## Requirements and Installation
 
@@ -41,7 +41,7 @@ sudo ufw disable
   
 ## How to Run the Project?
 
-The whole project can be directly executed by running the `./launch.sh` script. To do so, please provide as an argument the address of your `mongodb` host.
+The whole project can be directly executed by running the `./launch.sh` script. To do so, please provide as an argument the address of your `mongodb` host (i.e. `./launch.sh <mongo-host-ip>`).
 
 Optionally, it can be run manually by:
 * `python final_project.py launch` to launch and populate the database by fetching the corresponding data.

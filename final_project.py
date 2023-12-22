@@ -18,7 +18,7 @@ import plotly.subplots as sp
 app = Flask(__name__)
 stop_update_thread = False
 
-# Set-Up LED Display
+# Set-Up LED Display Configuration
 if sys.platform == 'uwp':
     import winrt_smbus as smbus
     bus = smbus.SMBus(1)
@@ -31,16 +31,20 @@ else:
     else:
         bus = smbus.SMBus(0)
 
-# this device has two I2C addresses
+# This device has two I2C addresses
 DISPLAY_RGB_ADDR = 0x62
 DISPLAY_TEXT_ADDR = 0x3e
 
-# send command to display
 def textCommand(cmd):
+    """
+    Send text command to the display. (Code taken from the official Grove documentation)
+    """
     bus.write_byte_data(DISPLAY_TEXT_ADDR,0x80,cmd)
 
-# set display text \n for second line(or auto wrap)
 def setText(text):
+    """
+    Set display text (includes auto-clear). (Code taken from the official Grove documentation)
+    """
     textCommand(0x01) # clear display
     time.sleep(.05)
     textCommand(0x08 | 0x04) # display on, no cursor
@@ -87,6 +91,9 @@ class WeatherStationStats:
         self.wind, self.wind_min, self.wind_max = None, None, None
 
     def parse_from_html(self, html_content):
+        """
+        Parses the station information from the provided HTML content.
+        """
         soup = BeautifulSoup(html_content, 'html.parser')
         self.air_quality = soup.find(id = "aqiwgtvalue").text
         # PM2.5 Data
@@ -123,6 +130,9 @@ class WeatherStationStats:
         self.wind_max = soup.find(id = "max_w").text
     
     def __str__(self):
+        """
+        Pretty prints the information for each station.
+        """
         blank = ""
         table = f"+----------------------+----------------------+----------------------+----------------------+\n"
         table += f"| Attribute            | Current              | Min                  | Max                  |\n"
@@ -142,7 +152,9 @@ class WeatherStationStats:
         return table
 
 def fetch_data():
-    # Fetch data from weather stations
+    """
+    Fetch data from weather stations.
+    """
     stations_data = []
     for id, name in zip(station_ids, station_names):
         station_url = f"https://aqicn.org/city/spain/pais-vasco/bilbao/{id}/es/"
@@ -153,7 +165,9 @@ def fetch_data():
     return stations_data
 
 def update_sensors():
-    # Update LED info from local sensors
+    """
+    Update LED info from local sensors.
+    """
     setText("Updating...")
     time.sleep(2)
     # Display Current Temp and Humidity from local sensor
@@ -161,6 +175,9 @@ def update_sensors():
     setText(f"Temp: {temp} \nHumidity: {humi}")
 
 def update_database():
+    """
+    Updates the mongodb database (run in a separate execution thread from the Flask app).
+    """
     while True:
         update_sensors()
         # Fetch data from weather stations
@@ -182,7 +199,9 @@ def update_database():
         print("Updating Database Entries...")
 
 def fetch_data_from_db():
-    # Fetch data from the database
+    """
+    Read station data from the database.
+    """
     stations_data = []
     for id in station_ids:
         document = collection.find_one({"id": id})
@@ -194,7 +213,9 @@ def fetch_data_from_db():
     return stations_data
 
 def generate_charts(data):
-    
+    """
+    Generates plotly interactive charts for the provided station information.
+    """
     charts = []
 
     for station in data:
@@ -258,15 +279,19 @@ def generate_charts(data):
 
 @app.route('/')
 def dashboard():
+    """
+    Flask interactive dashboard.
+    """
+    # Fetch data from the database
     stations_data = fetch_data_from_db()
+    # Generate interactive charts
     charts = generate_charts(stations_data)
-
+    # Reshape charts + render html template
     charts_dashboard = [item[0:] for item in charts]
-
     return render_template('dashboard.html', charts = charts_dashboard)
 
 if __name__ == "__main__":
-
+    # Check if operation mode was provided...
     try:
         op_mode = sys.argv[1]
         if op_mode not in ["launch", "stream", "close"]: raise IndexError
@@ -274,7 +299,7 @@ if __name__ == "__main__":
         print("Please provide one of the following operation modes: launch/stream/close")
         sys.exit(1)
 
-    # Create a MongoDB client and connect to the database
+    # Create a MongoDB client and connect to the database (host-ip set as env. variable in the ./launch.sh script)
     host, port = os.environ.get('MONGO_HOST'), 27017
     client = pymongo.MongoClient(host, port)
     db = client.weather_stations_db
